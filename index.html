@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 移动端适配 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="简约风天气查询应用 - 支持定位搜索">
+    <title>天气查询 · Weather</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 主容器 -->
+    <div class="container">
+
+        <!-- 顶部搜索栏 -->
+        <header class="search-bar">
+            <div class="search-box">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="搜索城市（如：北京、上海、广州）"
+                    autocomplete="off"
+                    enterkeyhint="search"
+                >
+                <button id="searchBtn" class="btn-search" title="搜索">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+            </div>
+            <!-- 定位按钮 -->
+            <button id="locateBtn" class="btn-locate" title="使用当前位置">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"></path>
+                </svg>
+            </button>
+        </header>
+
+        <!-- 加载状态 -->
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>正在获取天气数据...</p>
+        </div>
+
+        <!-- 错误提示 -->
+        <div id="errorMsg" class="error-msg hidden">
+            <p id="errorText"></p>
+            <button id="retryBtn" class="btn-retry">重试</button>
+        </div>
+
+        <!-- 天气内容区 -->
+        <main id="weatherContent" class="weather-content hidden">
+
+            <!-- 当前天气卡片 -->
+            <section class="current-weather card">
+                <div class="location-info">
+                    <h1 id="cityName">--</h1>
+                    <span id="updateTime" class="update-time"></span>
+                </div>
+                <div class="weather-main">
+                    <div class="temp-area">
+                        <span id="tempNow" class="temperature">--</span>
+                        <span class="temp-unit">°C</span>
+                    </div>
+                    <div class="weather-icon-area">
+                        <span id="weatherIcon" class="weather-emoji">☀️</span>
+                        <span id="weatherText" class="weather-text">--</span>
+                    </div>
+                </div>
+                <!-- 详细信息网格 -->
+                <div class="weather-details">
+                    <div class="detail-item">
+                        <span class="detail-label">体感温度</span>
+                        <span id="feelsLike" class="detail-value">--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">湿度</span>
+                        <span id="humidity" class="detail-value">--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">风向</span>
+                        <span id="windDir" class="detail-value">--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">风力</span>
+                        <span id="windScale" class="detail-value">--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">云量</span>
+                        <span id="visibility" class="detail-value">--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">气压</span>
+                        <span id="pressure" class="detail-value">--</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7日天气预报 -->
+            <section class="forecast-section">
+                <h2 class="section-title">未来 7 天</h2>
+                <div id="forecastList" class="forecast-list"></div>
+            </section>
+
+        </main>
+
+        <!-- 底部版权 -->
+        <footer class="footer">
+            <p>数据来源：<a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a></p>
+        </footer>
+
+    </div>
+
+    <!-- 引入脚本文件（注意顺序：config → api → ui → app） -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
