@@ -1,0 +1,543 @@
+/* ================================================
+ * 简约风天气应用 - 样式表
+ * 支持移动端响应式设计
+ * ================================================ */
+
+/* ========== CSS 变量 - 主题配色 ========== */
+:root {
+    /* 主色调 */
+    --primary: #3b82f6;
+    --primary-light: #60a5fa;
+    --primary-dark: #2563eb;
+
+    /* 背景色系 */
+    --bg-gradient-start: #e0e7ff;
+    --bg-gradient-end: #f0f9ff;
+    --bg-card: rgba(255, 255, 255, 0.75);
+    --bg-card-hover: rgba(255, 255, 255, 0.9);
+
+    /* 文字色系 */
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --text-inverse: #ffffff;
+
+    /* 边框和阴影 */
+    --border-color: rgba(255, 255, 255, 0.3);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+    /* 圆角 */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+
+    /* 过渡 */
+    --transition: all 0.3s ease;
+}
+
+/* ========== 基础重置 ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB',
+        'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+    /* 动态天气背景渐变 */
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    background-attachment: fixed;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ========== 布局容器 ========== */
+.container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+    min-height: 100vh;
+}
+
+/* ========== 搜索栏 ========== */
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 12px 0;
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    backdrop-filter: blur(10px);
+}
+
+.search-box {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 12px 48px 12px 16px;
+    font-size: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    color: var(--text-primary);
+    outline: none;
+    transition: var(--transition);
+}
+
+#searchInput::placeholder {
+    color: var(--text-muted);
+}
+
+#searchInput:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    background: #fff;
+}
+
+.btn-search {
+    position: absolute;
+    right: 4px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--text-inverse);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.btn-search:hover {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+}
+
+.btn-locate {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    color: var(--primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.btn-locate:hover {
+    background: var(--primary);
+    color: var(--text-inverse);
+    border-color: var(--primary);
+}
+
+.btn-locate:active {
+    transform: scale(0.95);
+}
+
+.btn-locate.loading svg {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ========== 加载 / 错误 状态 ========== */
+.loading {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.loading p {
+    color: var(--text-secondary);
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+    border: 3px solid var(--primary-light);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.error-msg {
+    text-align: center;
+    padding: 40px 20px;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.error-msg p {
+    color: #dc2626;
+    margin-bottom: 16px;
+    font-size: 15px;
+}
+
+.btn-retry {
+    padding: 8px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    color: var(--text-inverse);
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-retry:hover {
+    background: var(--primary-dark);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ========== 天气卡片 ========== */
+.weather-content {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    background: var(--bg-card);
+    backdrop-filter: blur(15px);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+/* ========== 当前天气 ========== */
+.current-weather {
+    text-align: center;
+}
+
+.location-info {
+    margin-bottom: 20px;
+}
+
+.location-info h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.update-time {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.weather-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+}
+
+.temp-area {
+    display: flex;
+    align-items: flex-start;
+}
+
+.temperature {
+    font-size: 64px;
+    font-weight: 200;
+    line-height: 1;
+    color: var(--text-primary);
+    letter-spacing: -2px;
+}
+
+.temp-unit {
+    font-size: 24px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+.weather-icon-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.weather-icon-area .weather-emoji {
+    font-size: 72px;
+    line-height: 1;
+}
+
+.weather-text {
+    font-size: 16px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* 详细信息网格 */
+.weather-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px 12px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+}
+
+.detail-label {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.detail-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* ========== 7日预报 ========== */
+.forecast-section {
+    margin-top: 8px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    padding-left: 4px;
+}
+
+.forecast-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.forecast-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.forecast-item:hover {
+    background: var(--bg-card-hover);
+    transform: translateX(4px);
+}
+
+.forecast-day {
+    width: 60px;
+    flex-shrink: 0;
+}
+
+.forecast-day .day-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: block;
+}
+
+.forecast-day .day-date {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 2px;
+}
+
+.forecast-icon {
+    flex: 0 0 auto;
+    text-align: center;
+    padding: 0 12px;
+}
+
+.forecast-icon .weather-emoji {
+    font-size: 32px;
+    line-height: 1;
+}
+
+.forecast-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.forecast-text .text-day {
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: block;
+}
+
+.forecast-temp {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.forecast-temp .temp-range {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.forecast-temp .temp-range .temp-min {
+    color: var(--text-muted);
+}
+
+.forecast-wind {
+    text-align: right;
+    flex-shrink: 0;
+    margin-left: 12px;
+}
+
+.forecast-wind .wind-info {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* ========== 底部 ========== */
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.footer a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* ========== 响应式 - 平板 ========== */
+@media (max-width: 768px) {
+    .container {
+        padding: 16px 12px 30px;
+    }
+
+    .weather-details {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px 8px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+}
+
+/* ========== 响应式 - 手机 ========== */
+@media (max-width: 480px) {
+    .weather-main {
+        gap: 16px;
+    }
+
+    .temperature {
+        font-size: 52px;
+    }
+
+    .weather-icon-area .weather-emoji {
+        font-size: 60px;
+    }
+
+    .weather-details {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px 10px;
+    }
+
+    .forecast-item {
+        padding: 12px 10px;
+        flex-wrap: wrap;
+        row-gap: 8px;
+    }
+
+    .forecast-day {
+        width: 50px;
+    }
+
+    .forecast-wind {
+        width: 100%;
+        text-align: left;
+        margin-left: 0;
+        padding-left: 60px;
+    }
+
+    .location-info h1 {
+        font-size: 20px;
+    }
+
+    .card {
+        padding: 18px 16px;
+        border-radius: var(--radius-md);
+    }
+
+    .search-bar {
+        gap: 8px;
+    }
+
+    #searchInput {
+        padding: 10px 44px 10px 14px;
+        font-size: 14px;
+    }
+
+    .btn-search {
+        width: 34px;
+        height: 34px;
+    }
+
+    .btn-locate {
+        width: 40px;
+        height: 40px;
+    }
+}
